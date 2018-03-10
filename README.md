@@ -1,4 +1,4 @@
-# db-manager-sd
+# db-manager-sdk
 
 对数据库的增删改查
 
