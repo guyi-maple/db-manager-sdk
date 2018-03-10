@@ -1,5 +1,4 @@
-# db-manager-sdk
-数据库管理 (用户，库) SDK
+# db-manager-sd
 
 对数据库的增删改查
 
