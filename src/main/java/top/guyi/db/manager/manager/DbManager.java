@@ -3,26 +3,26 @@ package top.guyi.db.manager.manager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import top.guyi.db.manager.ThreadRepository;
-import top.guyi.db.manager.entity.DBConfig;
-import top.guyi.db.manager.entity.DBUser;
+import top.guyi.db.manager.entity.DbConfig;
+import top.guyi.db.manager.entity.DbUser;
 import top.guyi.db.manager.entity.SQLExecuteResult;
+import top.guyi.db.manager.manager.enums.DataBasePermission;
 
-import javax.sql.DataSource;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 数据库管理器接口
  */
-public interface DBManager {
+public interface DbManager {
 
-    default void open(DBConfig config){
+    default void open(DbConfig config){
         ThreadRepository.dbConfig.set(config);
     }
 
     default JdbcTemplate getTemplate(){
         JdbcTemplate template = ThreadRepository.jdbcTemplate.get();
         if(template == null){
-            DBConfig config = ThreadRepository.dbConfig.get();
+            DbConfig config = ThreadRepository.dbConfig.get();
             if(config == null){
                 throw new RuntimeException("please run the method: open");
             }
@@ -46,17 +46,24 @@ public interface DBManager {
         return result;
     }
 
-    DriverManagerDataSource buildSource(DBConfig config);
+    DriverManagerDataSource buildSource(DbConfig config);
 
-    List<String> dataBaseNames();
+    Collection<String> dataBaseNames();
 
-    List<String> tables(String databaseName);
+    Collection<String> tables(String databaseName);
 
-    List<String> columnNames(String dataBaseName, String tableName);
+    Collection<String> columnNames(String dataBaseName, String tableName);
 
-    List<DBUser> users();
+    Collection<DbUser> users();
 
-    SQLExecuteResult createUser(DBUser user,String passWord);
+    SQLExecuteResult createUser(DbUser user, String passWord);
 
-    SQLExecuteResult deleteUser(DBUser user);
+    SQLExecuteResult deleteUser(DbUser user);
+
+    SQLExecuteResult authorization(DbUser user, String dataBaseName, DataBasePermission permission);
+
+    Collection<Columns> query(String sql);
+
+    DbPage<Columns> tableQuery(String dataBaseName,String tableName, QueryPageRequest page);
+
 }
