@@ -6,6 +6,9 @@ import top.guyi.db.manager.ThreadRepository;
 import top.guyi.db.manager.entity.DbConfig;
 import top.guyi.db.manager.entity.DbUser;
 import top.guyi.db.manager.entity.SQLExecuteResult;
+import top.guyi.db.manager.manager.entry.Columns;
+import top.guyi.db.manager.manager.entry.DbPage;
+import top.guyi.db.manager.manager.entry.QueryPageRequest;
 import top.guyi.db.manager.manager.enums.DataBasePermission;
 
 import java.util.Collection;
@@ -15,8 +18,14 @@ import java.util.Collection;
  */
 public interface DbManager {
 
+    String dialect();
+
     default void open(DbConfig config){
         ThreadRepository.dbConfig.set(config);
+    }
+
+    default void close(){
+        ThreadRepository.dbConfig.remove();
     }
 
     default JdbcTemplate getTemplate(){
@@ -50,6 +59,8 @@ public interface DbManager {
 
     Collection<String> dataBaseNames();
 
+    SQLExecuteResult createDataBase(String name,String charset);
+
     Collection<String> tables(String databaseName);
 
     Collection<String> columnNames(String dataBaseName, String tableName);
@@ -64,6 +75,6 @@ public interface DbManager {
 
     Collection<Columns> query(String sql);
 
-    DbPage<Columns> tableQuery(String dataBaseName,String tableName, QueryPageRequest page);
+    DbPage<Columns> tableQuery(String dataBaseName, String tableName, QueryPageRequest page);
 
 }

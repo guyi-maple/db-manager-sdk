@@ -1,6 +1,6 @@
-package top.guyi.db.manager.manager.impl;
+package top.guyi.db.manager.manager.dialect;
 
-import top.guyi.db.manager.manager.QueryPageRequest;
+import top.guyi.db.manager.manager.entry.QueryPageRequest;
 
 public class MySqlQueryPageRequest extends QueryPageRequest {
 

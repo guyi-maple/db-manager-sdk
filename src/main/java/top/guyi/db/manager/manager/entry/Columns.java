@@ -1,4 +1,4 @@
-package top.guyi.db.manager.manager;
+package top.guyi.db.manager.manager.entry;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
